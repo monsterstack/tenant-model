@@ -37,7 +37,7 @@ const saveService = (tenant) => {
 
 // When successfully connected
 mongoose.connection.on('connected', () => {
-  console.log('Mongoose default connection open to');
+  debug('Mongoose default connection open to');
 });
 
 // When the connection is disconnected
