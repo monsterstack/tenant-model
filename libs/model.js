@@ -7,10 +7,10 @@ const Promise = require('promise');
 const DB = config.db.name;
 const HOST = config.db.host;
 
-var url = 'mongodb://' + HOST + '/' + DB;
-mongoose.connect(url);
+const URL = 'mongodb://' + HOST + '/' + DB;
+mongoose.connect(URL);
 
-var tenantSchema = new Schema({
+const tenantSchema = new Schema({
   id: String,
   name:  String,
   services: [{ name: String }],
@@ -20,29 +20,19 @@ var tenantSchema = new Schema({
   apiSecret: String
 });
 
-var Tenant = mongoose.model('Tenant', tenantSchema);
-
-const connect = (url) => {
-  console.log("tenant model connect");
-  let p = new Promise((reject, resolve) => {
-      var dbConnString = 'mongodb://' + HOST + '/' + DB;
-      console.log(url);
-      mongoose.connect(url || dbConnString, function(err) {
-          if (err) {
-            console.log(err);
-            throw err;
-          }
-      });
-   });
-  return p;
-}
+const Tenant = mongoose.model('Tenant', tenantSchema);
 
 const saveService = (tenant) => {
-  tenant.timestamp = new Date();
-  return tenant.save(function(err) {
-    if (err) throw err;
-    console.log('Tenant created!');
+  let p = new Promise((resolve, reject) => {
+    let tenantModel = new Tenant(tenant);
+    tenantModel.timestamp = new Date();
+    tenantModel.save((err, doc) => {
+      if (err) reject(err);
+      else
+       resolve(doc);
+    });
   });
+  return p;
 }
 
 // When successfully connected
@@ -56,5 +46,4 @@ mongoose.connection.on('disconnected', function () {
 });
 
 exports.Tenant = Tenant;
-exports.connect = connect;
 exports.saveService = saveService;
