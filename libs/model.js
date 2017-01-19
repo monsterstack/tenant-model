@@ -2,15 +2,10 @@
 const debug = require('debug')('tenant-model');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const config = require('config');
 const Promise = require('promise');
-const DB = config.db.name;
-const HOST = config.db.host;
 
-console.log(DB);
-console.log(HOST);
 
-const URL = 'mongodb://' + HOST + '/' + DB;
+const URL = 'mongodb://localhost/dspTenant';
 mongoose.connect(URL);
 
 const tenantSchema = new Schema({
