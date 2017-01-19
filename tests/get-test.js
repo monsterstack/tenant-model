@@ -15,12 +15,13 @@ describe('tenant-model:get', () => {
     done();
     });
 
-  let tenantId = '5877f555426a1e1ffca3528b';
+  let tenantId = '5877f5743266a020027dd532';
 
   it('getting test tenant', (done) => {
      model.findTenant(tenantId).then((result) => {
-      assert(result, result);
       console.log(result);
+      assert(result, result);
+
       done();
     }).catch((err) => {
       assert(err === null, "Failure did not occur");
