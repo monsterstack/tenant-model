@@ -30,7 +30,10 @@ const saveTenant = (tenant) => {
 }
 
 const findTenant = (id) => {
-  return Tenant.findById(id);
+  let p = new Promise((reject, resolve) => {
+    resolve(Tenant.findById(id) );
+  });
+  return p;
 }
 
 // When successfully connected
