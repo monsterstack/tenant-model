@@ -25,12 +25,18 @@ describe('tenant-model:save', () => {
   };
 
   it('Saving test tenant', (done) => {
+<<<<<<< HEAD
     var tenantModel = new Tenant(tenant);
      model.saveTenant(tenantModel).then((result) => {
+=======
+     model.saveService(tenant).then((result) => {
+>>>>>>> 31b9aecf763f6cc6d744c688c51a08ee652a9e26
       console.log("save");
-    //  assert(result, "Tenant was saved");
+      console.log(result);
+      assert(result, "Tenant was saved");
       done();
     }).catch((err) => {
+      console.log(err);
       assert(err === null, "Failure did not occur");
       done();
        });
