@@ -7,6 +7,9 @@ const Promise = require('promise');
 const DB = config.db.name;
 const HOST = config.db.host;
 
+console.log(DB);
+console.log(HOST);
+
 const URL = 'mongodb://' + HOST + '/' + DB;
 mongoose.connect(URL);
 
@@ -46,6 +49,5 @@ mongoose.connection.on('disconnected', () => {
 });
 
 exports.Tenant = Tenant;
-exports.connect = connect;
 exports.saveTenant = saveTenant;
 exports.findTenant = findTenant;
