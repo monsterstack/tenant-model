@@ -7,7 +7,7 @@ const Promise = require('promise');
 const DB = config.db.name;
 const HOST = config.db.host;
 
-const URL = `mongodb://${HOST}/${DB}`;
+const URL = 'mongodb://' + HOST + '/' + DB;
 mongoose.connect(URL);
 
 const tenantSchema = new Schema({
