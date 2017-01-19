@@ -37,12 +37,16 @@ const connect = (url) => {
   return p;
 }
 
-const saveService = (tenant) => {
+const saveTenant = (tenant) => {
   tenant.timestamp = new Date();
   return tenant.save(function(err) {
     if (err) throw err;
     console.log('Tenant created!');
   });
+}
+
+const findTenant = (id) => {
+  return Tenant.findById(id);
 }
 
 // When successfully connected
@@ -57,4 +61,5 @@ mongoose.connection.on('disconnected', function () {
 
 exports.Tenant = Tenant;
 exports.connect = connect;
-exports.saveService = saveService;
+exports.saveTenant = saveTenant;
+exports.findTenant = findTenant;

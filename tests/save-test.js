@@ -26,7 +26,7 @@ describe('tenant-model:save', () => {
 
   it('Saving test tenant', (done) => {
     var tenantModel = new Tenant(tenant);
-     model.saveService(tenantModel).then((result) => {
+     model.saveTenant(tenantModel).then((result) => {
       console.log("save");
     //  assert(result, "Tenant was saved");
       done();
