@@ -20,12 +20,12 @@ const tenantSchema = new Schema({
 const Tenant = mongoose.model('Tenant', tenantSchema);
 
 const saveTenant = (tenant) => {
+  console.log(tenant);
   tenant.timestamp = new Date();
   return tenant.save(function(err) {
     if (err) throw err;
     console.log('Tenant created!');
   });
-  return p;
 }
 
 const findTenant = (id) => {
