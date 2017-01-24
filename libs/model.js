@@ -49,6 +49,18 @@ const findTenant = (id) => {
   return p;
 }
 
+const findTenantByApiKey = (apiKey) =>{
+  let p = new Promise((resolve, reject) => {
+    Tenant.findOne({ 'apiKey': apiKey }, (err, doc) => {
+      if(err) reject(err);
+      else {
+        resolve(doc);
+      }
+    });
+  });
+  return p;
+}
+
 const allTenants = (page, size, sort) => {
   let p = new Promise((resolve, reject) => {
     Tenant.find().limit(size).skip(page*size).sort({
@@ -112,5 +124,6 @@ mongoose.connection.on('disconnected', () => {
 exports.Tenant = Tenant;
 exports.saveTenant = saveTenant;
 exports.findTenant = findTenant;
+exports.findTenantByApiKey = findTenantByApiKey;
 exports.findTenants = findTenants;
 exports.allTenants = allTenants;
