@@ -17,6 +17,8 @@ const tenantSchema = new Schema({
   apiSecret: String
 });
 
+tenantSchema.index({'$**': 'text'});
+
 const Tenant = mongoose.model('Tenant', tenantSchema);
 
 const saveTenant = (tenant) => {
@@ -47,9 +49,9 @@ const findTenant = (id) => {
   return p;
 }
 
-const findTenants = (page, size, sort) => {
+const findTenants = (search, page, size, sort) => {
   let p = new Promise((resolve, reject) => {
-    Tenant.find().limit(size).skip(page*size).sort({
+    Tenant.find({$text: {$search: search}}).limit(size).skip(page*size).sort({
       name: sort
     }).exec((err, tenants) => {
       Tenant.count().exec((err, count) => {
