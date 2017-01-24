@@ -20,6 +20,7 @@ const tenantSchema = new Schema({
 const Tenant = mongoose.model('Tenant', tenantSchema);
 
 const saveTenant = (tenant) => {
+  console.log(tenant);
   tenant.timestamp = new Date();
   let p = new Promise((resolve, reject) => {
     let tenantModel = new Tenant(tenant);
