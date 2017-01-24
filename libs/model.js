@@ -21,15 +21,54 @@ const Tenant = mongoose.model('Tenant', tenantSchema);
 
 const saveTenant = (tenant) => {
   tenant.timestamp = new Date();
-  return tenant.save(function(err) {
-    if (err) throw err;
-    console.log('Tenant created!');
+  let p = new Promise((resolve, reject) => {
+    let tenantModel = new Tenant(tenant);
+    tenantModel.save((err) => {
+      if(err) reject(err);
+      else {
+        resolve(tenantModel);
+      }
+    });
   });
+
   return p;
 }
 
 const findTenant = (id) => {
-    return Tenant.findById(id);
+  let p = new Promise((resolve, reject) => {
+    Tenant.findById(id, (err, doc) => {
+      if(err) reject(err);
+      else {
+        resolve(doc);
+      }
+    });
+  });
+  return p;
+}
+
+const findTenants = (page, size, sort) => {
+  let p = new Promise((resolve, reject) => {
+    Tenant.find().limit(size).skip(page*size).sort({
+      name: sort
+    }).exec((err, tenants) => {
+      Tenant.count().exec((err, count) => {
+        if(err) {
+          reject(err);
+        } else {
+          resolve({
+            elements: tenants,
+            page: {
+              page: page,
+              size: size,
+              totalCount: count
+            }
+          });
+        }
+      });
+    });
+  });
+
+  return p;
 }
 
 // When successfully connected
@@ -45,3 +84,4 @@ mongoose.connection.on('disconnected', () => {
 exports.Tenant = Tenant;
 exports.saveTenant = saveTenant;
 exports.findTenant = findTenant;
+exports.findTenants = findTenants;
