@@ -39,7 +39,7 @@ const saveTenant = (tenant) => {
 
 const findTenant = (id) => {
   let p = new Promise((resolve, reject) => {
-    Tenant.findById(id, (err, doc) => {
+    Tenant.findById(mongoose.Types.ObjectId(id), (err, doc) => {
       if(err) reject(err);
       else {
         resolve(doc);
