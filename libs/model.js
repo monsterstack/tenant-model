@@ -49,6 +49,31 @@ const findTenant = (id) => {
   return p;
 }
 
+const allTenants = (page, size, sort) => {
+  let p = new Promise((resolve, reject) => {
+    Tenant.find().limit(size).skip(page*size).sort({
+      name: sort
+    }).exec((err, tenants) => {
+      Tenant.count().exec((err, count) => {
+        if(err) {
+          reject(err);
+        } else {
+          resolve({
+            elements: tenants,
+            page: {
+              page: page,
+              size: size,
+              totalCount: count
+            }
+          });
+        }
+      });
+    });
+  });
+
+  return p;
+}
+
 const findTenants = (search, page, size, sort) => {
   let p = new Promise((resolve, reject) => {
     Tenant.find({$text: {$search: search}}).limit(size).skip(page*size).sort({
@@ -88,3 +113,4 @@ exports.Tenant = Tenant;
 exports.saveTenant = saveTenant;
 exports.findTenant = findTenant;
 exports.findTenants = findTenants;
+exports.allTenants = allTenants;
