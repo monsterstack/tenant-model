@@ -1,8 +1,9 @@
 'use strict';
 const debug = require('debug')('tenant-model');
 const mongoose = require('mongoose');
+const uuid = require ('uuid');
 const Schema = mongoose.Schema;
-
+const jwt = require('jsonwebtoken');
 
 const URL = 'mongodb://localhost/cdspTenant';
 mongoose.connect(URL);
@@ -22,8 +23,9 @@ tenantSchema.index({'$**': 'text'});
 const Tenant = mongoose.model('Tenant', tenantSchema);
 
 const saveTenant = (tenant) => {
-  console.log(tenant);
   tenant.timestamp = new Date();
+  tenant.apiKey = uuid.v1();
+  tenant.apiSecret = generateApiSecret(apiKey);
   let p = new Promise((resolve, reject) => {
     let tenantModel = new Tenant(tenant);
     tenantModel.save((err) => {
@@ -109,6 +111,16 @@ const findTenants = (search, page, size, sort) => {
   });
 
   return p;
+}
+
+// generate the JWT based apiSecret
+const generateApiSecret = (apiKey) = >{
+  var token = jwt.sign({
+    auth:  'magic',
+    agent: 'x-cdsp-tenant',
+    exp:   Math.floor(new Date().getTime()/1000) + 7*24*60*60; // Note: in seconds!
+  }, apiKey);  // secret is defined in the environment variable JWT_SECRET
+  return token;
 }
 
 // When successfully connected
