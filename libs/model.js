@@ -63,7 +63,7 @@ const allTenants = (page, size, sort) => {
             page: {
               page: page,
               size: size,
-              totalCount: count
+              total: count
             }
           });
         }
@@ -88,7 +88,7 @@ const findTenants = (search, page, size, sort) => {
             page: {
               page: page,
               size: size,
-              totalCount: count
+              total: count
             }
           });
         }
