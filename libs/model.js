@@ -14,7 +14,7 @@ const tenantSchema = new Schema({
   services: [{ name: String }],
   timestamp: Date,
   status: String,
-  apikey: String,
+  apiKey: String,
   apiSecret: String
 });
 
@@ -24,7 +24,9 @@ const Tenant = mongoose.model('Tenant', tenantSchema);
 
 const saveTenant = (tenant) => {
   tenant.timestamp = new Date();
-  tenant.apiKey = uuid.v1();
+  let apiKey = uuid.v1();
+  console.log(apiKey);
+  tenant.apiKey = apiKey;
   tenant.apiSecret = generateApiSecret(apiKey);
   let p = new Promise((resolve, reject) => {
     let tenantModel = new Tenant(tenant);
@@ -114,11 +116,11 @@ const findTenants = (search, page, size, sort) => {
 }
 
 // generate the JWT based apiSecret
-const generateApiSecret = (apiKey) = >{
+const generateApiSecret = (apiKey) => {
   var token = jwt.sign({
     auth:  'magic',
     agent: 'x-cdsp-tenant',
-    exp:   Math.floor(new Date().getTime()/1000) + 7*24*60*60; // Note: in seconds!
+    exp:   Math.floor(new Date().getTime()/1000) + 7*24*60*60 // Note: in seconds!
   }, apiKey);  // secret is defined in the environment variable JWT_SECRET
   return token;
 }
