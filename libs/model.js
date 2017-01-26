@@ -9,7 +9,6 @@ const URL = 'mongodb://localhost/cdspTenant';
 mongoose.connect(URL);
 
 const tenantSchema = new Schema({
-  id: String,
   name:  String,
   services: [{ name: String }],
   timestamp: Date,
