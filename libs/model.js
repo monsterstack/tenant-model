@@ -75,7 +75,7 @@ const allTenants = (page, size, sort) => {
           reject(err);
         } else {
           resolve({
-            elements: tenants,
+            elements: tenants || [],
             page: {
               page: page,
               size: size,
@@ -100,7 +100,7 @@ const findTenants = (search, page, size, sort) => {
           reject(err);
         } else {
           resolve({
-            elements: tenants,
+            elements: tenants || [],
             page: {
               page: page,
               size: size,
