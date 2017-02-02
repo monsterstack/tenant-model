@@ -8,7 +8,6 @@ const assert = require('assert');
 
 // Use bluebird
 mongoose.Promise = require('bluebird');
-assert.equal(query.exec().constructor, require('bluebird'));
 
 const URL = 'mongodb://localhost/cdspTenant';
 mongoose.connect(URL);
