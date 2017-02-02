@@ -5,6 +5,10 @@ const uuid = require ('uuid');
 const Schema = mongoose.Schema;
 const jwt = require('jsonwebtoken');
 
+// Use bluebird
+mongoose.Promise = require('bluebird');
+assert.equal(query.exec().constructor, require('bluebird'));
+
 const URL = 'mongodb://localhost/cdspTenant';
 mongoose.connect(URL);
 
