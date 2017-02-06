@@ -5,6 +5,7 @@ const uuid = require ('uuid');
 const Schema = mongoose.Schema;
 const jwt = require('jsonwebtoken');
 const assert = require('assert');
+const config = require('config');
 
 // Use bluebird
 mongoose.Promise = require('bluebird');
