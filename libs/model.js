@@ -9,7 +9,7 @@ const assert = require('assert');
 // Use bluebird
 mongoose.Promise = require('bluebird');
 
-const URL = 'mongodb://localhost/cdspTenant';
+const URL = `mongodb://${config.db.host}:${config.db.port}/cdspTenant`;
 mongoose.connect(URL);
 
 const tenantSchema = new Schema({
