@@ -1,6 +1,7 @@
 'use strict';
 const debug = require('debug')('tenant-model');
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const uuid = require ('uuid');
 const Schema = mongoose.Schema;
 const jwt = require('jsonwebtoken');
@@ -22,6 +23,7 @@ const tenantSchema = new Schema({
   apiSecret: String
 });
 
+tenantSchema.plugin(mongoosePaginate);
 tenantSchema.index({'$**': 'text'});
 
 const Tenant = mongoose.model('Tenant', tenantSchema);
@@ -108,24 +110,48 @@ const allTenants = (page, size, sort) => {
 
 const findTenants = (search, page, size, sort) => {
   let p = new Promise((resolve, reject) => {
-    Tenant.find({$text: {$search: search}}).limit(size).skip(page*size).sort({
-      name: sort
-    }).exec((err, tenants) => {
-      Tenant.count().exec((err, count) => {
-        if(err) {
-          reject(err);
-        } else {
-          resolve({
-            elements: tenants || [],
-            page: {
-              page: page,
-              size: size,
-              total: count
-            }
-          });
-        }
-      });
+    let sortDir = 1;
+    if(sort === 'desc') {
+      sortDir = -1
+    } else if(sort === 'asc') {
+      sortDir = 1;
+    }
+
+    Tenant.paginate({$text: {$search: search}}, {page: page, limit: size, sort: {
+      name: sortDir
+    }}, (err, tenants) => {
+      if(err) {
+        reject(err);
+      } else {
+        resolve({
+          elements: tenants.docs || [],
+          page: {
+            page: tenants.page,
+            size: tenants.limit,
+            total: tenants.total
+          }
+        });
+      }
     });
+    //
+    // Tenant.find({$text: {$search: search}}).limit(size).skip(page*size).sort({
+    //   name: sort
+    // }).exec((err, tenants) => {
+    //   Tenant.count().exec((err, count) => {
+    //     if(err) {
+    //       reject(err);
+    //     } else {
+    //       resolve({
+    //         elements: tenants || [],
+    //         page: {
+    //           page: page,
+    //           size: size,
+    //           total: count
+    //         }
+    //       });
+    //     }
+    //   });
+    // });
   });
 
   return p;
