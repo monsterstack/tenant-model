@@ -128,7 +128,7 @@ const findTenants = (search, page, size, sort) => {
         resolve({
           elements: tenants.docs || [],
           page: {
-            page: tenants.page - 1,
+            page: myPage,
             size: tenants.limit,
             total: tenants.total
           }
