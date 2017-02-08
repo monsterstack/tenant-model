@@ -117,7 +117,7 @@ const findTenants = (search, page, size, sort) => {
       sortDir = 1;
     }
 
-    Tenant.paginate({$text: {$search: search}}, {page: page, limit: size, sort: {
+    Tenant.paginate({$text: {$search: search}}, {page: page, limit: parseInt(size), sort: {
       name: sortDir
     }}, (err, tenants) => {
       if(err) {
