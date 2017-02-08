@@ -85,23 +85,30 @@ const findTenantByName = (name) => {
 
 const allTenants = (page, size, sort) => {
   let p = new Promise((resolve, reject) => {
-    Tenant.find().limit(size).skip(page*size).sort({
-      name: sort
-    }).exec((err, tenants) => {
-      Tenant.count().exec((err, count) => {
-        if(err) {
-          reject(err);
-        } else {
-          resolve({
-            elements: tenants || [],
-            page: {
-              page: page,
-              size: size,
-              total: count
-            }
-          });
-        }
-      });
+    let sortDir = 1;
+    if(sort === 'desc') {
+      sortDir = -1
+    } else if(sort === 'asc') {
+      sortDir = 1;
+    }
+
+    let myPage = parseInt(page) + 1;
+
+    Tenant.paginate({}, {page: myPage, limit: parseInt(size), sort: {
+      name: sortDir
+    }}, (err, tenants) => {
+      if(err) {
+        reject(err);
+      } else {
+        resolve({
+          elements: tenants.docs || [],
+          page: {
+            page: parseInt(page),
+            size: tenants.limit,
+            total: tenants.total
+          }
+        });
+      }
     });
   });
 
@@ -128,32 +135,13 @@ const findTenants = (search, page, size, sort) => {
         resolve({
           elements: tenants.docs || [],
           page: {
-            page: page,
+            page: parseInt(page),
             size: tenants.limit,
             total: tenants.total
           }
         });
       }
     });
-    //
-    // Tenant.find({$text: {$search: search}}).limit(size).skip(page*size).sort({
-    //   name: sort
-    // }).exec((err, tenants) => {
-    //   Tenant.count().exec((err, count) => {
-    //     if(err) {
-    //       reject(err);
-    //     } else {
-    //       resolve({
-    //         elements: tenants || [],
-    //         page: {
-    //           page: page,
-    //           size: size,
-    //           total: count
-    //         }
-    //       });
-    //     }
-    //   });
-    // });
   });
 
   return p;
