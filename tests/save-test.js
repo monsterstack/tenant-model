@@ -18,6 +18,7 @@ describe('tenant-model:save', () => {
   let tenant = {
     id: id,
     name: 'CCHSConnectedHome',
+    timestamp: new Date(),
     apikey : 'newKey',
     apiSecret: 'newSecret',
     status: 'Active',
