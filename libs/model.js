@@ -172,4 +172,5 @@ exports.saveTenant = saveTenant;
 exports.findTenant = findTenant;
 exports.findTenantByApiKey = findTenantByApiKey;
 exports.findTenants = findTenants;
+exports.findTenantByName = findTenantByName;
 exports.allTenants = allTenants;
