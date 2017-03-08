@@ -1,7 +1,6 @@
 'use strict';
 
 const uuid = require('uuid');
-const assert = require('chai').assert;
 const model = require('../index.js').model;
 const Tenant = model.Tenant;
 
@@ -20,14 +19,12 @@ describe('tenant-model:get', () => {
   it('getting test tenant', (done) => {
      model.findTenant(tenantId).then((result) => {
       console.log(result);
-      assert(result, result);
-
       done();
     }).catch((err) => {
       assert(err === null, "Failure did not occur");
-      done();
-       });
+      done(err);
     });
+  });
 
 
 
