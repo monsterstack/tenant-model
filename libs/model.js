@@ -20,13 +20,41 @@ const tenantSchema = new Schema({
   timestamp: Date,
   status: String,
   apiKey: String,
-  apiSecret: String
+  apiSecret: String,
 });
 
 tenantSchema.plugin(mongoosePaginate);
 tenantSchema.index({'$**': 'text'});
 
 const Tenant = mongoose.model('Tenant', tenantSchema);
+
+const applicationSchema = Schema({
+    name: String,
+    apiKey: String,
+    apiSecret: String,
+    scope: [String],
+    timestamp: Date,
+});
+
+const Application = mongoose.model('Application', applicationSchema);
+
+// @TODO: Make Repository Classes for this logic
+const saveApplication = (application) => {
+  application.timestamp = new Date();
+  let apiKey = uuid.v1();
+  let apiSecret = generateApiSecret(apiKey);
+
+  let p = new Promise((resolve, reject) => {
+    let applicationModel = new Application(application);
+    applicationModel.save((err) => {
+      if (err) reject(err);
+      else
+        resolve(applicationModel);
+    })
+  });
+
+  return p;
+}
 
 const saveTenant = (tenant) => {
   tenant.timestamp = new Date();
@@ -174,3 +202,6 @@ exports.findTenantByApiKey = findTenantByApiKey;
 exports.findTenants = findTenants;
 exports.findTenantByName = findTenantByName;
 exports.allTenants = allTenants;
+
+exports.Application = Application;
+exports.saveApplication = saveApplication;
