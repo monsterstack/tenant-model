@@ -1,7 +1,24 @@
 'use strict';
 const debug = require('debug')('tenant-model');
 const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate');
+const mPage = require('mongoose-paginate');
+mongoose.plugin(require('meanie-mongoose-to-json'));
+
+const oldMpage = mPage.paginate;
+
+mPage.paginate = (query, options) => {
+  return oldMpage(query, options).then((results) => {
+    if (results.docs) {
+      results.elements = results.docs;
+      delete results.docs;
+    }
+
+    return results;
+  });
+};
+
+mongoose.plugin(mPage);
+
 const uuid = require ('uuid');
 const Schema = mongoose.Schema;
 const jwt = require('jsonwebtoken');
@@ -27,6 +44,7 @@ tenantSchema.plugin(mongoosePaginate);
 tenantSchema.index({'$**': 'text'});
 
 const Tenant = mongoose.model('Tenant', tenantSchema);
+Tenant.repo = new TenantRepository(Tenant);
 
 const applicationSchema = Schema({
     name: String,
@@ -57,22 +75,7 @@ const saveApplication = (application) => {
 }
 
 const saveTenant = (tenant) => {
-  tenant.timestamp = new Date();
-  let apiKey = uuid.v1();
-  console.log(apiKey);
-  tenant.apiKey = apiKey;
-  tenant.apiSecret = generateApiSecret(apiKey);
-  let p = new Promise((resolve, reject) => {
-    let tenantModel = new Tenant(tenant);
-    tenantModel.save((err) => {
-      if(err) reject(err);
-      else {
-        resolve(tenantModel);
-      }
-    });
-  });
-
-  return p;
+  return Tenant.repo.save(tenant);
 }
 
 const findTenant = (id) => {
