@@ -18,7 +18,6 @@ describe('tenant-model:get', () => {
 
   it('getting test tenant', (done) => {
      model.findTenant(tenantId).then((result) => {
-      console.log(result);
       done();
     }).catch((err) => {
       assert(err === null, "Failure did not occur");
