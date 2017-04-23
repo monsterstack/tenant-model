@@ -40,7 +40,6 @@ const tenantSchema = new Schema({
   apiSecret: String,
 });
 
-tenantSchema.plugin(mongoosePaginate);
 tenantSchema.index({'$**': 'text'});
 
 const Tenant = mongoose.model('Tenant', tenantSchema);
