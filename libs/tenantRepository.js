@@ -51,3 +51,5 @@ class TenantRepository {
     return _this.Tenant.paginate(query, { offset: offset, limit: limit });
   }
 }
+
+module.exports.TenantRepository = TenantRepository;
