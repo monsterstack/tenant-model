@@ -87,15 +87,7 @@ const findTenant = (id) => {
 }
 
 const findTenantByApiKey = (apiKey) => {
-  let p = new Promise((resolve, reject) => {
-    Tenant.findOne({ 'apiKey': apiKey }, (err, doc) => {
-      if(err) reject(err);
-      else {
-        resolve(doc);
-      }
-    });
-  });
-  return p;
+  return Tenant.repo.findApiKey(apiKey);
 }
 
 const findTenantByName = (name) => {
