@@ -1,6 +1,13 @@
 'use strict';
 const debug = require('debug')('tenant-model');
 const mongoose = require('mongoose');
+
+const uuid = require ('uuid');
+const Schema = mongoose.Schema;
+const jwt = require('jsonwebtoken');
+const assert = require('assert');
+const config = require('config');
+
 const mPage = require('mongoose-paginate');
 mongoose.plugin(require('meanie-mongoose-to-json'));
 
@@ -19,11 +26,6 @@ mPage.paginate = (query, options) => {
 
 mongoose.plugin(mPage);
 
-const uuid = require ('uuid');
-const Schema = mongoose.Schema;
-const jwt = require('jsonwebtoken');
-const assert = require('assert');
-const config = require('config');
 
 const TenantRepository = require('./tenantRepository').TenantRepository;
 
@@ -42,11 +44,6 @@ const tenantSchema = new Schema({
   apiSecret: String,
 });
 
-tenantSchema.index({'$**': 'text'});
-
-const Tenant = mongoose.model('Tenant', tenantSchema);
-Tenant.repo = new TenantRepository(Tenant);
-
 const applicationSchema = Schema({
     name: String,
     apiKey: String,
@@ -55,7 +52,13 @@ const applicationSchema = Schema({
     timestamp: Date,
 });
 
+tenantSchema.index({'$**': 'text'});
+
+const Tenant = mongoose.model('Tenant', tenantSchema);
 const Application = mongoose.model('Application', applicationSchema);
+
+Tenant.repo = new TenantRepository(Tenant);
+
 
 // @TODO: Make Repository Classes for this logic
 const saveApplication = (application) => {
