@@ -78,15 +78,7 @@ const saveTenant = (tenant) => {
 }
 
 const findTenant = (id) => {
-  let p = new Promise((resolve, reject) => {
-    Tenant.findById(mongoose.Types.ObjectId(id), (err, doc) => {
-      if(err) reject(err);
-      else {
-        resolve(doc);
-      }
-    });
-  });
-  return p;
+  return Tenant.repo.findById(id);
 }
 
 const findTenantByApiKey = (apiKey) => {
@@ -102,15 +94,7 @@ const findTenantByApiKey = (apiKey) => {
 }
 
 const findTenantByName = (name) => {
-  let p = new Promise((resolve, reject) => {
-    Tenant.findOne({ 'name': name }, (err, doc) => {
-      if(err) reject(err);
-      else {
-        resolve(doc);
-      }
-    });
-  });
-  return p;
+  return Tenant.repo.findByName(name);
 }
 
 const allTenants = (page, size, sort) => {

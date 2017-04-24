@@ -36,6 +36,16 @@ class TenantRepository {
     return _this.Tenant.findOne({ _id: mongoose.Types.ObjectId(id) }).exec();
 	}
 
+	findByName(name) {
+		let _this = this;
+		return _this.Tenant.findOne({ name: name }).exec();
+	}
+
+	findByApiKey(apiKey) {
+		let _this = this;
+		return _this.Tenant.findOne({ apiKey: apiKey }).exec();
+	}
+
 	page(query, limit, offset) {
     let _this = this;
     return _this.Tenant.paginate(query, { offset: offset, limit: limit });
