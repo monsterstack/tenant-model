@@ -25,6 +25,8 @@ const jwt = require('jsonwebtoken');
 const assert = require('assert');
 const config = require('config');
 
+const TenantRepository = require('./tenantRepository').TenantRepository;
+
 // Use bluebird
 mongoose.Promise = require('bluebird');
 
