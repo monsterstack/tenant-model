@@ -4,21 +4,29 @@ const uuid = require('uuid');
 const model = require('../index.js').model;
 const Tenant = model.Tenant;
 
-/**
- * Tenant model
- * Save test
- */
 describe('tenant-model:get', () => {
-  let id = uuid.v1();
+  let tenantId;
   before((done) => {
-    done();
-    });
+    let tenant = {
 
-  let tenantId = '5877f5743266a020027dd532';
+    };
+
+    let tenantModel = new Tenant(tenant);
+    tenantModel.save().then((result) => {
+      tenantId = result.id;
+      done();
+    }).catch((err) => {
+      done(err);
+    });
+  });
+
 
   it('getting test tenant', (done) => {
      model.findTenant(tenantId).then((result) => {
-      done();
+       if(result.id === tenantId)
+          done();
+       else
+          done(new Error('Expected Id in saved tenant'));
     }).catch((err) => {
       assert(err === null, "Failure did not occur");
       done(err);

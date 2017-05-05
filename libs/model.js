@@ -2,6 +2,9 @@
 const debug = require('debug')('tenant-model');
 const mongoose = require('mongoose');
 
+// Use bluebird
+mongoose.Promise = require('bluebird');
+
 const uuid = require ('uuid');
 const Schema = mongoose.Schema;
 const jwt = require('jsonwebtoken');
@@ -9,7 +12,6 @@ const assert = require('assert');
 const config = require('config');
 
 const mPage = require('mongoose-paginate');
-mongoose.plugin(require('meanie-mongoose-to-json'));
 
 const oldMpage = mPage.paginate;
 
@@ -24,13 +26,22 @@ mPage.paginate = (query, options) => {
   });
 };
 
+// Plugins
 mongoose.plugin(mPage);
+mongoose.plugin(require('meanie-mongoose-to-json'));
 
+// When successfully connected
+mongoose.connection.on('connected', () => {
+  debug('Mongoose default connection open to');
+});
 
+// When the connection is disconnected
+mongoose.connection.on('disconnected', () => {
+  console.log('Mongoose default connection disconnected');
+});
+
+// Repositories
 const TenantRepository = require('./tenantRepository').TenantRepository;
-
-// Use bluebird
-mongoose.Promise = require('bluebird');
 
 const URL = `mongodb://${config.db.host}:${config.db.port}/cdspTenant`;
 mongoose.connect(URL);
@@ -167,16 +178,6 @@ const generateApiSecret = (apiKey) => {
   }, apiKey);  // secret is defined in the environment variable JWT_SECRET
   return token;
 }
-
-// When successfully connected
-mongoose.connection.on('connected', () => {
-  debug('Mongoose default connection open to');
-});
-
-// When the connection is disconnected
-mongoose.connection.on('disconnected', () => {
-  console.log('Mongoose default connection disconnected');
-});
 
 exports.Tenant = Tenant;
 exports.saveTenant = saveTenant;
