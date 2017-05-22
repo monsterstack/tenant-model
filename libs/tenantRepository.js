@@ -15,7 +15,7 @@ const generateApiSecret = (apiKey) => {
   return token;
 }
 
-class TenantRepository {
+class TenantRepository extends Repository {
 	constructor(model) {
 		this.Tenant = model;
 	}

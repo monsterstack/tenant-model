@@ -1,19 +1,15 @@
 'use strict';
 
+const should = require('should');
 const uuid = require('uuid');
-const assert = require('chai').assert;
 const model = require('../index.js').model;
 const Tenant = model.Tenant;
 
-/**
- * Tenant model
- * Save test
- */
 describe('tenant-model:save', () => {
   let id = uuid.v1();
   before((done) => {
     done();
-    });
+  });
 
   let tenant = {
     id: id,
@@ -28,15 +24,17 @@ describe('tenant-model:save', () => {
   it('Saving test tenant', (done) => {
     var tenantModel = new Tenant(tenant);
      model.saveTenant(tenantModel).then((result) => {
-      assert(result, "Tenant was saved");
-      done();
+       result.should.have.property('id');
+       result.should.have.property('status');
+       result.should.have.property('apiKey');
+       result.should.have.property('apiSecret');
+       result.should.have.property('status');
+       result.should.have.property('services');
+       done();
     }).catch((err) => {
-      assert(err === null, "Failure did not occur");
       done(err);
     });
   });
-
-
 
   after(() => {
 
