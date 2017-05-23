@@ -255,5 +255,5 @@ exports.saveApplication = saveApplication;
 exports.findApplication = findApplication;
 exports.findApplicationByApiKey = findApplicationByApiKey;
 exports.findApplications = findApplications;
-exports.findAppicationByName = findApplicationByName;
+exports.findApplicationByName = findApplicationByName;
 exports.allApplications = allApplications;
