@@ -68,6 +68,7 @@ tenantSchema.index({'$**': 'text'});
 const Tenant = mongoose.model('Tenant', tenantSchema);
 const Application = mongoose.model('Application', applicationSchema);
 
+Application.repo = new ApplicationRepository(Application);
 Tenant.repo = new TenantRepository(Tenant);
 
 
