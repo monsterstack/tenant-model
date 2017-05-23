@@ -42,6 +42,7 @@ mongoose.connection.on('disconnected', () => {
 
 // Repositories
 const TenantRepository = require('./tenantRepository').TenantRepository;
+const ApplicationRepository = require('./applicationRepository').ApplicationRepository;
 
 const URL = `mongodb://${config.db.host}:${config.db.port}/cdspTenant`;
 mongoose.connect(URL);
