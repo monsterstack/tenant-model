@@ -88,6 +88,38 @@ const findApplicationByName = (name) => {
   return Application.repo.findByName(name);
 }
 
+const findApplications = (search, page, size, sort) => {
+  let p = new Promise((resolve, reject) => {
+    let sortDir = 1;
+    if(sort === 'desc') {
+      sortDir = -1
+    } else if(sort === 'asc') {
+      sortDir = 1;
+    }
+
+    let myPage = parseInt(page) + 1;
+
+    Application.paginate({$text: {$search: search}}, {page: myPage, limit: parseInt(size), sort: {
+      name: sortDir
+    }}, (err, tenants) => {
+      if(err) {
+        reject(err);
+      } else {
+        resolve({
+          elements: tenants.docs || [],
+          page: {
+            page: parseInt(page),
+            size: tenants.limit,
+            total: tenants.total
+          }
+        });
+      }
+    });
+  });
+
+  return p;
+}
+
 const allApplications = (page, size, sort) => {
   let p = new Promise((resolve, reject) => {
     let sortDir = 1;
