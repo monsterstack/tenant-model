@@ -73,17 +73,48 @@ Tenant.repo = new TenantRepository(Tenant);
 
 // @TODO: Make Repository Classes for this logic
 const saveApplication = (application) => {
-  application.timestamp = new Date();
-  let apiKey = uuid.v1();
-  let apiSecret = generateApiSecret(apiKey);
+  return Application.repo.save(application);
+}
 
+const findApplication = (id) => {
+  return Application.repo.findById(id);
+}
+
+const findApplicationByApiKey = (apiKey) => {
+  return Application.repo.findApiKey(apiKey);
+}
+
+const findApplicationByName = (name) => {
+  return Application.repo.findByName(name);
+}
+
+const allApplications = (page, size, sort) => {
   let p = new Promise((resolve, reject) => {
-    let applicationModel = new Application(application);
-    applicationModel.save((err) => {
-      if (err) reject(err);
-      else
-        resolve(applicationModel);
-    })
+    let sortDir = 1;
+    if(sort === 'desc') {
+      sortDir = -1
+    } else if(sort === 'asc') {
+      sortDir = 1;
+    }
+
+    let myPage = parseInt(page) + 1;
+
+    Application.paginate({}, {page: myPage, limit: parseInt(size), sort: {
+      name: sortDir
+    }}, (err, applications) => {
+      if(err) {
+        reject(err);
+      } else {
+        resolve({
+          elements: applications.docs || [],
+          page: {
+            page: parseInt(page),
+            size: applications.limit,
+            total: applications.total
+          }
+        });
+      }
+    });
   });
 
   return p;
@@ -189,3 +220,8 @@ exports.allTenants = allTenants;
 
 exports.Application = Application;
 exports.saveApplication = saveApplication;
+exports.findApplication = findApplication;
+exports.findApplicationByApiKey = findApplicationByApiKey;
+exports.findApplications = findApplications;
+exports.findAppicationByName = findApplicationByName;
+exports.allApplications = allApplications;
