@@ -43,6 +43,7 @@ mongoose.connection.on('disconnected', () => {
 // Repositories
 const TenantRepository = require('./tenantRepository').TenantRepository;
 const ApplicationRepository = require('./applicationRepository').ApplicationRepository;
+const AccountRepository = require('./accountRepository').AccountRepository;
 
 const URL = `mongodb://${config.db.host}:${config.db.port}/cdspTenant`;
 mongoose.connect(URL);
@@ -62,18 +63,40 @@ const applicationSchema = Schema({
     apiSecret: String,
     scope: [String],
     timestamp: Date,
+    accountId: String,
+    tenantId: String,
+});
+
+const accountSchema = Schema({
+    accountNumber: String,
+    primaryUserId: String,
+    tenantId: String,
 });
 
 tenantSchema.index({'$**': 'text'});
 
 const Tenant = mongoose.model('Tenant', tenantSchema);
 const Application = mongoose.model('Application', applicationSchema);
+const Account = mongoose.model('Account', accountSchema);
 
 Application.repo = new ApplicationRepository(Application);
 Tenant.repo = new TenantRepository(Tenant);
+Account.repo = new AccountRepository(Account);
 
 
 // @TODO: Make Repository Classes for this logic
+const saveAccount = (account) => {
+  return Account.repo.save(account);
+}
+
+const findAccount = (id) => {
+  return Account.repo.findById(id);
+}
+
+const findAccountByAccountNumber = (accountNumber) => {
+  return Account.repo.findByAccountNumber(accountNumber);
+}
+
 const saveApplication = (application) => {
   return Application.repo.save(application);
 }
@@ -234,16 +257,6 @@ const findTenants = (search, page, size, sort) => {
   return p;
 }
 
-// generate the JWT based apiSecret
-const generateApiSecret = (apiKey) => {
-  var token = jwt.sign({
-    auth:  'magic',
-    agent: 'x-cdsp-tenant',
-    exp:   Math.floor(new Date().getTime()/1000) + 7*24*60*60 // Note: in seconds!
-  }, apiKey);  // secret is defined in the environment variable JWT_SECRET
-  return token;
-}
-
 exports.Tenant = Tenant;
 exports.saveTenant = saveTenant;
 exports.findTenant = findTenant;
@@ -259,3 +272,8 @@ exports.findApplicationByApiKey = findApplicationByApiKey;
 exports.findApplications = findApplications;
 exports.findApplicationByName = findApplicationByName;
 exports.allApplications = allApplications;
+
+exports.Account = Account;
+exports.saveAccount = saveAccount;
+exports.findAccount = findAccount;
+exports.findAccountByAccountNumber = findAccountByAccountNumber;
