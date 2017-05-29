@@ -14,7 +14,7 @@ class AccountRepository extends Repository {
 		let _this = this;
 
 		let accountModel = new _this.Account(account);
-		return applicationModel.save();
+		return accountModel.save();
 	}
 
 	findById(id) {
