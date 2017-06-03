@@ -7,12 +7,13 @@ const Repository = require('./repository').Repository;
 const mongoose = require('mongoose');
 
 // generate the JWT based apiSecret
-const generateApiSecret = (apiKey) => {
+const generateApiSecret = (tenant) => {
   var token = jwt.sign({
     auth:  'magic',
     agent: 'x-cdsp-tenant',
+		name: tenant.name,
     exp:   Math.floor(new Date().getTime()/1000) + 7*24*60*60 // Note: in seconds!
-  }, apiKey);  // secret is defined in the environment variable JWT_SECRET
+  }, tenant.apiKey);  // secret is defined in the environment variable JWT_SECRET
   return token;
 }
 
@@ -27,7 +28,7 @@ class TenantRepository extends Repository {
 		tenant.timestamp = new Date();
   	let apiKey = uuid.v1();
   	tenant.apiKey = apiKey;
-  	tenant.apiSecret = generateApiSecret(apiKey);
+  	tenant.apiSecret = generateApiSecret(tenant);
 
 		let tenantModel = new _this.Tenant(tenant);
 		return tenantModel.save();
