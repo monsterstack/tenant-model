@@ -39,7 +39,8 @@ class TenantRepository extends Repository {
 
 	findById(id) {
 	  let _this = this;
-    return _this.Tenant.findOne({ _id: mongoose.Types.ObjectId(id) }).exec();
+		let tenantModel = new _this.Tenant(tenant);
+    return _this.Tenant.findOne({ _id: mongoose.Types.ObjectId(tenantModel.id) }).exec();
 	}
 
 	findByName(name) {
