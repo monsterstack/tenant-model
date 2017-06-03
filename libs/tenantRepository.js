@@ -34,13 +34,13 @@ class TenantRepository extends Repository {
 
 	update(tenant) {
 		let _this = this;
-		return _this.Tenant.update({_id: mongoose.Types.ObjectId(id)}, tenant).exec();
+		let tenantModel = new _this.Tenant(tenant);
+		return _this.Tenant.update({_id: mongoose.Types.ObjectId(tenantModel.id)}, tenant).exec();
 	}
 
 	findById(id) {
 	  let _this = this;
-		let tenantModel = new _this.Tenant(tenant);
-    return _this.Tenant.findOne({ _id: mongoose.Types.ObjectId(tenantModel.id) }).exec();
+    return _this.Tenant.findOne({ _id: mongoose.Types.ObjectId(id) }).exec();
 	}
 
 	findByName(name) {
