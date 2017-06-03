@@ -2,6 +2,7 @@
 const uuid = require('node-uuid');
 const jwt = require('jsonwebtoken');
 
+const Promise = require('promise');
 const Repository = require('./repository').Repository;
 const mongoose = require('mongoose');
 
@@ -34,8 +35,13 @@ class TenantRepository extends Repository {
 
 	update(tenant) {
 		let _this = this;
-		let tenantModel = new _this.Tenant(tenant);
-		return _this.Tenant.update({_id: mongoose.Types.ObjectId(tenantModel.id)}, tenant).exec();
+		let p = new Promise((resolve, reject) => {
+			_this.Tenant.findByIdAndUpdate(tenant.id, tenant, (err, tenant) => {
+				if (err) reject(err);
+				else resolve(tenant);
+			})
+		});
+		return p;
 	}
 
 	findById(id) {
