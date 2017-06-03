@@ -32,6 +32,11 @@ class TenantRepository extends Repository {
 		return tenantModel.save();
 	}
 
+	update(tenant) {
+		let _this = this;
+		return _this.Tenant.update({_id: mongoose.Types.ObjectId(id)}, tenant).exec();
+	}
+
 	findById(id) {
 	  let _this = this;
     return _this.Tenant.findOne({ _id: mongoose.Types.ObjectId(id) }).exec();

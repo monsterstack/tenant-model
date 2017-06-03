@@ -2,6 +2,8 @@
 const debug = require('debug')('tenant-model');
 const mongoose = require('mongoose');
 
+mongoose.plugin(require('meanie-mongoose-to-json'));
+
 // Use bluebird
 mongoose.Promise = require('bluebird');
 
@@ -181,6 +183,10 @@ const saveTenant = (tenant) => {
   return Tenant.repo.save(tenant);
 }
 
+const updateTenant = (tenant) => {
+  return Tenant.repo.update(tenant);
+}
+
 const findTenant = (id) => {
   return Tenant.repo.findById(id);
 }
@@ -259,6 +265,7 @@ const findTenants = (search, page, size, sort) => {
 
 exports.Tenant = Tenant;
 exports.saveTenant = saveTenant;
+exports.updateTenant = updateTenant;
 exports.findTenant = findTenant;
 exports.findTenantByApiKey = findTenantByApiKey;
 exports.findTenants = findTenants;
