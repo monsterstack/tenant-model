@@ -91,6 +91,10 @@ const saveAccount = (account) => {
   return Account.repo.save(account);
 }
 
+const updateAccount = (account) => {
+  return Account.repo.update(account);
+}
+
 const findAccount = (id) => {
   return Account.repo.findById(id);
 }
@@ -287,5 +291,6 @@ exports.allApplications = allApplications;
 
 exports.Account = Account;
 exports.saveAccount = saveAccount;
+exports.updateAccount = updateAccount;
 exports.findAccount = findAccount;
 exports.findAccountByAccountNumber = findAccountByAccountNumber;
