@@ -6,6 +6,7 @@ class ApiSecretFactory {
 		var token = jwt.sign({
     	auth:  'magic',
     	agent: 'x-cdsp-tenant',
+			scope: 'Tenant',
 			name: tenant.name,
     	exp:   Math.floor(new Date().getTime()/1000) + 7*24*60*60 // Note: in seconds!
   	}, tenant.apiKey);  // secret is defined in the environment variable JWT_SECRET
@@ -15,7 +16,8 @@ class ApiSecretFactory {
 	createApplicationApiSecret(application) {
 		var token = jwt.sign({
     	auth:  'magic',
-    	agent: 'x-cdsp-tenant',
+    	agent: 'x-cdsp-application',
+			scope: 'Application',
 			name: application.name,
 			tenantId: application.tenantId,
     	exp:   Math.floor(new Date().getTime()/1000) + 7*24*60*60 // Note: in seconds!

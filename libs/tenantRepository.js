@@ -36,7 +36,7 @@ class TenantRepository extends Repository {
 				tenant.apiSecret = _this.apiSecretFactory.createTenantApiSecret(tenant);
 			}
 
-			console.log(tenant);
+			tenant.timestamp = new Date();
 			_this.Tenant.findByIdAndUpdate(tenant.id, { 
 					$set: { 
 						status: tenant.status, 
@@ -45,7 +45,6 @@ class TenantRepository extends Repository {
 						apiSecret: tenant.apiSecret 
 					} 
 				}, (err, updated) => {
-					console.log(updated);
 					if (err) reject(err);
 					else resolve(tenant);
 			});
