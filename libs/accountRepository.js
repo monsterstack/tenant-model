@@ -17,6 +17,21 @@ class AccountRepository extends Repository {
 		return accountModel.save();
 	}
 
+	update(account) {
+		let _this = this;
+		let p = new Promise((resolve, reject) => {
+			_this.Account.findByIdAndUpdate(account.id, { 
+					$set: { 
+						accountNumber: account.accountNumber
+					} 
+				}, (err, updated) => {
+					if (err) reject(err);
+					else resolve(account);
+			});
+		});
+		return p;
+	}
+
 	findById(id) {
 	  let _this = this;
     return _this.Account.findOne({ _id: mongoose.Types.ObjectId(id) }).exec();
