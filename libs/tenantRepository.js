@@ -44,6 +44,9 @@ class TenantRepository extends Repository {
 			if (tenant.apiSecret === undefined) {
 				tenant.apiSecret = generateApiSecret(tenant);
 			}
+			console.log("......");
+			console.log(tenant);
+			console.log(".......");
 
 			_this.Tenant.findByIdAndUpdate(tenant.id, tenant, (err, updated) => {
 				console.log(updated);
