@@ -34,7 +34,7 @@ class TenantRepository extends Repository {
 			}
 
 			if (tenant.apiSecret === undefined) {
-				tenant.apiSecret = _this.generateApiSecret(tenant);
+				tenant.apiSecret = _this.apiSecretFactory.createTenantApiSecret(tenant);
 			}
 
 			_this.Tenant.findByIdAndUpdate(tenant.id, { 
