@@ -20,7 +20,7 @@ class TenantRepository extends Repository {
 		tenant.timestamp = new Date();
   	let apiKey = uuid.v1();
   	tenant.apiKey = apiKey;
-  	tenant.apiSecret = apiSecretFactory.createTenantApiSecret(tenant);
+  	tenant.apiSecret = this.apiSecretFactory.createTenantApiSecret(tenant);
 
 		let tenantModel = new _this.Tenant(tenant);
 		return tenantModel.save();
@@ -34,7 +34,7 @@ class TenantRepository extends Repository {
 			}
 
 			if (tenant.apiSecret === undefined) {
-				tenant.apiSecret = generateApiSecret(tenant);
+				tenant.apiSecret = _this.generateApiSecret(tenant);
 			}
 
 			_this.Tenant.findByIdAndUpdate(tenant.id, { 
