@@ -1,6 +1,8 @@
 'use strict';
 const uuid = require('node-uuid');
 const jwt = require('jsonwebtoken');
+const Promise = require('promise');
+const ApiSecretFactory = require('./apiSecretFactory');
 
 const Repository = require('./repository').Repository;
 const mongoose = require('mongoose');
@@ -19,6 +21,7 @@ class ApplicationRepository extends Repository {
 	constructor(model) {
 		super();
 		this.Application = model;
+		this.apiSecretFactory = new ApiSecretFactory();
 	}
 
 	save(application) {
@@ -26,7 +29,7 @@ class ApplicationRepository extends Repository {
 		application.timestamp = new Date();
   	let apiKey = uuid.v1();
   	application.apiKey = apiKey;
-  	application.apiSecret = generateApiSecret(apiKey);
+  	application.apiSecret = _this.apiSecretFactory.createApplicationApiSecret(application);
 
 		let applicationModel = new _this.Application(application);
 		return applicationModel.save();
