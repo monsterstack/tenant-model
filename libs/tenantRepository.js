@@ -53,7 +53,7 @@ class TenantRepository extends Repository {
 						status: tenant.status, 
 						services: tenant.services, 
 						apiKey: tenant.apiKey, 
-						apiSecret: apiSecret 
+						apiSecret: tenant.apiSecret 
 					} 
 				}, (err, updated) => {
 					console.log(updated);
