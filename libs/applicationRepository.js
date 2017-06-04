@@ -7,16 +7,6 @@ const ApiSecretFactory = require('./apiSecretFactory');
 const Repository = require('./repository').Repository;
 const mongoose = require('mongoose');
 
-// generate the JWT based apiSecret
-const generateApiSecret = (apiKey) => {
-  var token = jwt.sign({
-    auth:  'magic',
-    agent: 'x-cdsp-app',
-    exp:   Math.floor(new Date().getTime()/1000) + 7*24*60*60 // Note: in seconds!
-  }, apiKey);  // secret is defined in the environment variable JWT_SECRET
-  return token;
-}
-
 class ApplicationRepository extends Repository {
 	constructor(model) {
 		super();
