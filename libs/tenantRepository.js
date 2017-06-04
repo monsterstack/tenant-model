@@ -48,11 +48,18 @@ class TenantRepository extends Repository {
 			console.log(tenant);
 			console.log(".......");
 
-			_this.Tenant.findByIdAndUpdate(tenant.id, tenant, (err, updated) => {
-				console.log(updated);
-				if (err) reject(err);
-				else resolve(updated);
-			})
+			_this.Tenant.findByIdAndUpdate(tenant.id, { 
+					$set: { 
+						status: tenant.status, 
+						services: tenant.services, 
+						apiKey: tenant.apiKey, 
+						apiSecret: apiSecret 
+					} 
+				}, (err, updated) => {
+					console.log(updated);
+					if (err) reject(err);
+					else resolve(updated);
+			});
 		});
 		return p;
 	}
