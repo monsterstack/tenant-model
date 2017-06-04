@@ -44,10 +44,11 @@ class TenantRepository extends Repository {
 			if (tenant.apiSecret === undefined) {
 				tenant.apiSecret = generateApiSecret(tenant);
 			}
-			
-			_this.Tenant.findByIdAndUpdate(tenant.id, tenant, (err, tenant) => {
+
+			_this.Tenant.findByIdAndUpdate(tenant.id, tenant, (err, updated) => {
+				console.log(updated);
 				if (err) reject(err);
-				else resolve(tenant);
+				else resolve(updated);
 			})
 		});
 		return p;
