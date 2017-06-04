@@ -46,7 +46,7 @@ class TenantRepository extends Repository {
 					} 
 				}, (err, updated) => {
 					if (err) reject(err);
-					else resolve(updated);
+					else resolve(tenant);
 			});
 		});
 		return p;
