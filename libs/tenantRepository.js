@@ -37,6 +37,14 @@ class TenantRepository extends Repository {
 	update(tenant) {
 		let _this = this;
 		let p = new Promise((resolve, reject) => {
+			if (tenant.apiKey === undefined) {
+				tenant.apiKey = uuid.v1();
+			}
+
+			if (tenant.apiSecret === undefined) {
+				tenant.apiSecret = generateApiSecret(tenant);
+			}
+			
 			_this.Tenant.findByIdAndUpdate(tenant.id, tenant, (err, tenant) => {
 				if (err) reject(err);
 				else resolve(tenant);
