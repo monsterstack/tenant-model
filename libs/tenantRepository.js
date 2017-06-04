@@ -45,6 +45,7 @@ class TenantRepository extends Repository {
 						apiSecret: tenant.apiSecret 
 					} 
 				}, (err, updated) => {
+					console.log(updated);
 					if (err) reject(err);
 					else resolve(tenant);
 			});
