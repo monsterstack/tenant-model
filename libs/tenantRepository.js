@@ -36,6 +36,7 @@ class TenantRepository extends Repository {
 				tenant.apiSecret = _this.apiSecretFactory.createTenantApiSecret(tenant);
 			}
 
+			console.log(tenant);
 			_this.Tenant.findByIdAndUpdate(tenant.id, { 
 					$set: { 
 						status: tenant.status, 
