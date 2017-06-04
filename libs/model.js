@@ -103,6 +103,10 @@ const saveApplication = (application) => {
   return Application.repo.save(application);
 }
 
+const updateApplication = (application) => {
+  return Application.repo.update(application);
+}
+
 const findApplication = (id) => {
   return Application.repo.findById(id);
 }

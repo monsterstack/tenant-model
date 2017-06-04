@@ -32,6 +32,33 @@ class ApplicationRepository extends Repository {
 		return applicationModel.save();
 	}
 
+	update(application) {
+		let _this = this;
+		let p = new Promise((resolve, reject) => {
+			if (application.apiKey === undefined) {
+				application.apiKey = uuid.v1();
+			}
+
+			if (application.apiSecret === undefined) {
+				application.apiSecret = _this.apiSecretFactory.createApplicationApiSecret(application);
+			}
+
+			application.timestamp = new Date();
+			_this.Application.findByIdAndUpdate(application.id, { 
+					$set: { 
+						status: application.status, 
+						scope: application.scope, 
+						apiKey: application.apiKey, 
+						apiSecret: application.apiSecret 
+					} 
+				}, (err, updated) => {
+					if (err) reject(err);
+					else resolve(application);
+			});
+		});
+		return p;
+	}
+
 	findById(id) {
 	  let _this = this;
     return _this.Application.findOne({ _id: mongoose.Types.ObjectId(id) }).exec();
