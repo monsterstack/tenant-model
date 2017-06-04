@@ -1,7 +1,7 @@
 'use strict';
 
 class ApiSecretFactory {
-	createTenantSecret(tenant) {
+	createTenantApiSecret(tenant) {
 		var token = jwt.sign({
     	auth:  'magic',
     	agent: 'x-cdsp-tenant',
@@ -11,7 +11,7 @@ class ApiSecretFactory {
   	return token;
 	}
 
-	createApplicationSecret(application) {
+	createApplicationApiSecret(application) {
 		var token = jwt.sign({
     	auth:  'magic',
     	agent: 'x-cdsp-tenant',
