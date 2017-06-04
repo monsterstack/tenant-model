@@ -3,24 +3,16 @@ const uuid = require('node-uuid');
 const jwt = require('jsonwebtoken');
 
 const Promise = require('promise');
+const ApiSecretFactory = require('./apiSecretFactory');
 const Repository = require('./repository').Repository;
 const mongoose = require('mongoose');
-
-// generate the JWT based apiSecret
-const generateApiSecret = (tenant) => {
-  var token = jwt.sign({
-    auth:  'magic',
-    agent: 'x-cdsp-tenant',
-		name: tenant.name,
-    exp:   Math.floor(new Date().getTime()/1000) + 7*24*60*60 // Note: in seconds!
-  }, tenant.apiKey);  // secret is defined in the environment variable JWT_SECRET
-  return token;
-}
 
 class TenantRepository extends Repository {
 	constructor(model) {
 		super();
 		this.Tenant = model;
+
+		this.apiSecretFactory = new ApiSecretFactory();
 	}
 
 	save(tenant) {
@@ -28,7 +20,7 @@ class TenantRepository extends Repository {
 		tenant.timestamp = new Date();
   	let apiKey = uuid.v1();
   	tenant.apiKey = apiKey;
-  	tenant.apiSecret = generateApiSecret(tenant);
+  	tenant.apiSecret = apiSecretFactory.createTenantApiSecret(tenant);
 
 		let tenantModel = new _this.Tenant(tenant);
 		return tenantModel.save();
@@ -44,9 +36,6 @@ class TenantRepository extends Repository {
 			if (tenant.apiSecret === undefined) {
 				tenant.apiSecret = generateApiSecret(tenant);
 			}
-			console.log("......");
-			console.log(tenant);
-			console.log(".......");
 
 			_this.Tenant.findByIdAndUpdate(tenant.id, { 
 					$set: { 
@@ -56,7 +45,6 @@ class TenantRepository extends Repository {
 						apiSecret: tenant.apiSecret 
 					} 
 				}, (err, updated) => {
-					console.log(updated);
 					if (err) reject(err);
 					else resolve(updated);
 			});
