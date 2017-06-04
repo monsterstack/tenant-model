@@ -1,6 +1,5 @@
 'use strict';
 const uuid = require('node-uuid');
-const jwt = require('jsonwebtoken');
 
 const Promise = require('promise');
 const ApiSecretFactory = require('./apiSecretFactory');
