@@ -278,6 +278,7 @@ exports.allTenants = allTenants;
 
 exports.Application = Application;
 exports.saveApplication = saveApplication;
+exports.updateApplication = updateApplication;
 exports.findApplication = findApplication;
 exports.findApplicationByApiKey = findApplicationByApiKey;
 exports.findApplications = findApplications;
