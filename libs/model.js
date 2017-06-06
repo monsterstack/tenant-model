@@ -76,9 +76,9 @@ const accountSchema = Schema({
 });
 
 const userSchema = Schema({
-  firstName: String,
-  lastName: String,
-  fullName: String,
+  firstname: String,
+  lastname: String,
+  fullname: String,
   password: String,
   username: String,
   accountId: String,
