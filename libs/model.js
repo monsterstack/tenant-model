@@ -79,6 +79,8 @@ const userSchema = Schema({
   firstName: String,
   lastName: String,
   fullName: String,
+  password: String,
+  username: String,
   accountId: String,
   role: String,
   tenantId: String

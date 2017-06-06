@@ -22,7 +22,12 @@ class UserRepository extends Repository {
 		let p = new Promise((resolve, reject) => {
 			_this.User.findByIdAndUpdate(user.id, { 
 					$set: { 
-						firstName: user.firstName
+						firstName: user.firstname,
+						lastname: user.lastname,
+						phoneNumber: user.phoneNumber,
+						email: user.email,
+						accountId: user.accountId,
+						tenantId: user.tenantId
 					} 
 				}, (err, updated) => {
 					if (err) reject(err);
