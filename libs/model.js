@@ -46,6 +46,7 @@ mongoose.connection.on('disconnected', () => {
 const TenantRepository = require('./tenantRepository').TenantRepository;
 const ApplicationRepository = require('./applicationRepository').ApplicationRepository;
 const AccountRepository = require('./accountRepository').AccountRepository;
+const UserRepository = require('./userRepository').UserRepository;
 
 const URL = `mongodb://${config.db.host}:${config.db.port}/cdspTenant`;
 mongoose.connect(URL);
@@ -71,8 +72,16 @@ const applicationSchema = Schema({
 
 const accountSchema = Schema({
     accountNumber: String,
-    primaryUserId: String,
     tenantId: String,
+});
+
+const userSchema = Schema({
+  firstName: String,
+  lastName: String,
+  fullName: String,
+  accountId: String,
+  role: String,
+  tenantId: String
 });
 
 tenantSchema.index({'$**': 'text'});
@@ -80,11 +89,12 @@ tenantSchema.index({'$**': 'text'});
 const Tenant = mongoose.model('Tenant', tenantSchema);
 const Application = mongoose.model('Application', applicationSchema);
 const Account = mongoose.model('Account', accountSchema);
+const User = mongoose.model('User', userSchema);
 
 Application.repo = new ApplicationRepository(Application);
 Tenant.repo = new TenantRepository(Tenant);
 Account.repo = new AccountRepository(Account);
-
+User.repo = new UserRepository(User);
 
 // @TODO: Make Repository Classes for this logic
 const saveAccount = (account) => {
@@ -101,6 +111,14 @@ const findAccount = (id) => {
 
 const findAccountByAccountNumber = (accountNumber) => {
   return Account.repo.findByAccountNumber(accountNumber);
+}
+
+const saveUser = (user) => {
+  return User.repo.save(user);
+}
+
+const findUserByUsername = (username) => {
+  return User.repo.findByUsername(username);
 }
 
 const saveApplication = (application) => {
@@ -294,3 +312,7 @@ exports.saveAccount = saveAccount;
 exports.updateAccount = updateAccount;
 exports.findAccount = findAccount;
 exports.findAccountByAccountNumber = findAccountByAccountNumber;
+
+exports.User = User;
+exports.findUserByUsername = findUserByUsername;
+exports.saveUser = saveUser;
