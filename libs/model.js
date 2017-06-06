@@ -82,6 +82,7 @@ const userSchema = Schema({
   password: String,
   username: String,
   accountId: String,
+  phoneNumber: String,
   role: String,
   tenantId: String
 });
