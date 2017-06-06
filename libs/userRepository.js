@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 class UserRepository extends Repository {
 	constructor(model) {
 		super();
-		this.Account = model;
+		this.User = model;
 	}
 
 	save(user) {
