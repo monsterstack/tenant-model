@@ -62,6 +62,7 @@ const tenantSchema = new Schema({
 
 const applicationSchema = Schema({
     name: String,
+    locale: String,
     apiKey: String,
     apiSecret: String,
     scope: [String],
@@ -124,6 +125,10 @@ const saveUser = (user) => {
 
 const findUserByUsername = (username) => {
   return User.repo.findByUsername(username);
+}
+
+const findUser = (id) => {
+  return User.repo.findById(id);
 }
 
 const saveApplication = (application) => {
@@ -320,4 +325,5 @@ exports.findAccountByAccountNumber = findAccountByAccountNumber;
 
 exports.User = User;
 exports.findUserByUsername = findUserByUsername;
+exports.findUser = findUser;
 exports.saveUser = saveUser;
