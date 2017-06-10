@@ -20,12 +20,22 @@ class UserRepository extends Repository {
 	update(user) {
 		let _this = this;
 		let p = new Promise((resolve, reject) => {
-			_this.User.findByIdAndUpdate(user.id, { 
-					$set: user
-				}, (err, updated) => {
-					if (err) reject(err);
-					else resolve(updated);
-			});
+			_this.findById(user.id).then((found) => {
+				if (found) {
+					found.firstname = user.firstname;
+					found.lastname = user.lastname;
+					found.username = user.username;
+					found.password = user.password;
+					found.role = user.role;
+					found.email = user.email;
+					found.phoneNumber = user.phoneNumber;
+					resolve(found);
+				} else {
+					resolve(user);
+				}
+			}).catch((err) => {
+				reject(err);
+			})
 		});
 		return p;
 	}
