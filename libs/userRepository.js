@@ -24,7 +24,7 @@ class UserRepository extends Repository {
 					$set: user
 				}, (err, updated) => {
 					if (err) reject(err);
-					else resolve(updated);
+					else resolve(user);
 			});
 		});
 		return p;
