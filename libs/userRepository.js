@@ -31,7 +31,7 @@ class UserRepository extends Repository {
 					} 
 				}, (err, updated) => {
 					if (err) reject(err);
-					else resolve(user);
+					else resolve(updated);
 			});
 		});
 		return p;
