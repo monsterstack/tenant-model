@@ -232,7 +232,7 @@ const findTenant = (id) => {
 }
 
 const findTenantByApiKey = (apiKey) => {
-  return Tenant.repo.findApiKey(apiKey);
+  return Tenant.repo.findByApiKey(apiKey);
 }
 
 const findTenantByName = (name) => {
