@@ -38,12 +38,7 @@ class TenantRepository extends Repository {
 
 			tenant.timestamp = new Date();
 			_this.Tenant.findByIdAndUpdate(tenant.id, { 
-					$set: { 
-						status: tenant.status, 
-						services: tenant.services, 
-						apiKey: tenant.apiKey, 
-						apiSecret: tenant.apiSecret 
-					} 
+					$set: tenant
 				}, (err, updated) => {
 					if (err) reject(err);
 					else resolve(tenant);
