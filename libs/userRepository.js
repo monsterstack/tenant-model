@@ -29,6 +29,8 @@ class UserRepository extends Repository {
 					found.role = user.role;
 					found.email = user.email;
 					found.phoneNumber = user.phoneNumber;
+
+					found.save();
 					resolve(found);
 				} else {
 					resolve(user);
