@@ -123,6 +123,10 @@ const saveUser = (user) => {
   return User.repo.save(user);
 }
 
+const updateUser = (user) => {
+  return User.repo.update(user);
+}
+
 const findUserByUsername = (username) => {
   return User.repo.findByUsername(username);
 }
@@ -327,3 +331,4 @@ exports.User = User;
 exports.findUserByUsername = findUserByUsername;
 exports.findUser = findUser;
 exports.saveUser = saveUser;
+exports.updateUser = updateUser;
