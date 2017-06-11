@@ -42,6 +42,12 @@ mongoose.connection.on('disconnected', () => {
   console.log('Mongoose default connection disconnected');
 });
 
+// Schemas
+const TenantSchema = require('./schemas/tenant.schema');
+const UserSchema = require('./schemas/user.schema');
+const AccountSchema = require('./schemas/account.schema');
+const ApplicationSchema = require('./schemas/application.schema');
+
 // Repositories
 const TenantRepository = require('./tenantRepository').TenantRepository;
 const ApplicationRepository = require('./applicationRepository').ApplicationRepository;
@@ -51,51 +57,10 @@ const UserRepository = require('./userRepository').UserRepository;
 const URL = `mongodb://${config.db.host}:${config.db.port}/cdspTenant`;
 mongoose.connect(URL);
 
-const tenantSchema = new Schema({
-  name:  String,
-  services: [{ name: String }],
-  timestamp: Date,
-  status: String,
-  apiKey: String,
-  apiSecret: String,
-});
-
-const applicationSchema = Schema({
-    name: String,
-    locale: String,
-    apiKey: String,
-    apiSecret: String,
-    scope: [String],
-    timestamp: Date,
-    accountId: String,
-    tenantId: String,
-});
-
-const accountSchema = Schema({
-    accountNumber: String,
-    tenantId: String,
-});
-
-const userSchema = Schema({
-  firstname: String,
-  lastname: String,
-  fullname: String,
-  password: String,
-  username: String,
-  accountId: String,
-  phoneNumber: String,
-  locale: String,
-  email: String,
-  role: String,
-  tenantId: String
-});
-
-tenantSchema.index({'$**': 'text'});
-
-const Tenant = mongoose.model('Tenant', tenantSchema);
-const Application = mongoose.model('Application', applicationSchema);
-const Account = mongoose.model('Account', accountSchema);
-const User = mongoose.model('User', userSchema);
+const Tenant = mongoose.model('Tenant', TenantSchema);
+const Application = mongoose.model('Application', ApplicationSchema);
+const Account = mongoose.model('Account', AccountSchema);
+const User = mongoose.model('User', UserSchema);
 
 Application.repo = new ApplicationRepository(Application);
 Tenant.repo = new TenantRepository(Tenant);
