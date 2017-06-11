@@ -1,4 +1,5 @@
 'use strict';
+const Schema = mongoose.Schema;
 
 const applicationSchema = Schema({
     name: String,

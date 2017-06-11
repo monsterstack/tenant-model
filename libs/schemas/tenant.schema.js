@@ -1,4 +1,5 @@
 'use strict';
+const Schema = mongoose.Schema;
 
 const tenantSchema = new Schema({
   name:  String,
