@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const tenantSchema = new Schema({
   name:  String,
-  services: [{ name: String }],
+  services: [String],
   timestamp: Date,
   status: String,
   apiKey: String,
