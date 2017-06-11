@@ -102,6 +102,14 @@ Tenant.repo = new TenantRepository(Tenant);
 Account.repo = new AccountRepository(Account);
 User.repo = new UserRepository(User);
 
+const merge = (obj, obj2, fields) => {
+  fields.forEach((field) => {
+    obj[field] = obj2[field];
+  });
+
+  return obj;
+}
+
 // @TODO: Make Repository Classes for this logic
 const saveAccount = (account) => {
   return Account.repo.save(account);
@@ -332,3 +340,5 @@ exports.findUserByUsername = findUserByUsername;
 exports.findUser = findUser;
 exports.saveUser = saveUser;
 exports.updateUser = updateUser;
+
+exports.merge = merge;
