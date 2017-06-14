@@ -121,7 +121,7 @@ const findApplication = (id) => {
 }
 
 const findApplicationByApiKey = (apiKey) => {
-  return Application.repo.findApiKey(apiKey);
+  return Application.repo.findByApiKey(apiKey);
 }
 
 const findApplicationByName = (name) => {
