@@ -11,6 +11,7 @@ const applicationSchema = Schema({
     timestamp: Date,
     accountId: String,
     tenantId: String,
+    tenantName: String,
 });
 
 module.exports = applicationSchema;
