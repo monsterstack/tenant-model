@@ -108,6 +108,37 @@ const findUser = (id) => {
   return User.repo.findById(id);
 }
 
+const allUsers = (id) => {
+  let p = new Promise((resolve, reject) => {
+    let sortDir = 1;
+    if(sort === 'desc') {
+      sortDir = -1
+    } else if(sort === 'asc') {
+      sortDir = 1;
+    }
+
+    let myPage = parseInt(page) + 1;
+
+    User.paginate({}, {page: myPage, limit: parseInt(size), sort: {
+      name: sortDir
+    }}, (err, users) => {
+      if(err) {
+        reject(err);
+      } else {
+        resolve({
+          elements: users.docs || [],
+          page: {
+            page: parseInt(page),
+            size: users.limit,
+            total: users.total
+          }
+        });
+      }
+    });
+  });
+  return p;
+}
+
 const saveApplication = (application) => {
   return Application.repo.save(application);
 }
@@ -305,5 +336,6 @@ exports.findUserByUsername = findUserByUsername;
 exports.findUser = findUser;
 exports.saveUser = saveUser;
 exports.updateUser = updateUser;
+exports.allUsers = allUsers;
 
 exports.merge = merge;
