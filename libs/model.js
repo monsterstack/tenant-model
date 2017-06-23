@@ -108,7 +108,7 @@ const findUser = (id) => {
   return User.repo.findById(id);
 }
 
-const allUsers = (id) => {
+const allUsers = (page, size, sort) => {
   let p = new Promise((resolve, reject) => {
     let sortDir = 1;
     if(sort === 'desc') {
